@@ -1,0 +1,12 @@
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+@import "tailwindcss";
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes drawCheck {
+    from { stroke-dashoffset: 24; }
+    to   { stroke-dashoffset: 0; }
+}
+
+.hz-root * { font-family: 'IBM Plex Sans', sans-serif; }
+.hz-field-enter { animation: fadeIn 0.2s ease both; }
