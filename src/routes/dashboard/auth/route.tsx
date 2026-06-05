@@ -7,7 +7,7 @@ export const Route = createFileRoute("/dashboard/auth")({
       getTitle: () => "Users & Groups"
     },
     navbar: {
-        getLabel: () => "Users & Groups"
+      getLabel: () => "Users & Groups"
     }
   }
 })

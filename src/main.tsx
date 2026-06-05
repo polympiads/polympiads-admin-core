@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter, type LinkProps } from '@tanstack/react-router'
+import './lib/api';
 
 import {} from './index.css';
 

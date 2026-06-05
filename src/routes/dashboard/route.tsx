@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
@@ -15,10 +15,20 @@ import Topbar from '../../components/nav/Topbar';
 import Navbar from '../../components/nav/Navbar';
 import useRouteBreadcrumbs from '../../hooks/nav/useRouteBreadcrumbs';
 import useRouteNavigation from '../../hooks/nav/useRouteNavigation';
+import { useAuth } from '../../lib/auth';
+import { useEffect } from 'react';
 
 function DashboardLayout() {
   const breadcrumbsInfo = useRouteBreadcrumbs();
   const navbarInfo      = useRouteNavigation();
+
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loading && user === null) {
+      navigate({ to: "/login" });
+    }
+  }, [user, loading]);
  
   return (
     <>

@@ -8,8 +8,8 @@ export const Route = createFileRoute("/dashboard/auth/users")({
       getLink:  () => ({ "to": "/dashboard/auth/users" })
     },
     navbar: {
-        getLabel: () => "Users",
-        getLink:  () => ({ "to": "/dashboard/auth/users" })
+      getLabel: () => "Users",
+      getLink:  () => ({ "to": "/dashboard/auth/users" })
     }
   }
 })

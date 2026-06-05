@@ -1,14 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect, useRef, type KeyboardEventHandler } from "react";
 import { TextField } from "../components/form/TextField.tsx"
 import { Button } from "../components/form/Button.tsx"
 import CheckIcon from '../components/icons/CheckIcon.tsx';
+import { useAuth } from '../lib/auth.tsx';
 
 export const Route = createFileRoute('/login')({
   component: Login,
 })
 
 function Login() {
+  const navigate = useNavigate();
+
+  const { user, login } = useAuth();
+  
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,7 +22,15 @@ function Login() {
   const [passwordError, setPasswordError] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const success = user !== null;
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        navigate({ to: '/dashboard' });
+      }, 1000);
+    }
+  }, [success]);
 
   const usernameRef: any = useRef(null);
 
@@ -41,15 +54,27 @@ function Login() {
     return valid;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setGeneralError("");
     if (!validate()) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      //setGeneralError("Unexpected error.");
-      setSuccess(true);
-    }, 1800);
+
+    const error = await login(username, password);
+
+    setLoading(false);
+
+    if (error) {
+      if (error instanceof TypeError) {
+        setGeneralError("Network error. Please check your connection.");
+        return;
+      }
+
+      if (error.username) setUsernameError(error.username[0]);
+      if (error.password) setPasswordError(error.password[0]);
+      if (error.non_field_errors) setGeneralError(error.non_field_errors[0]);
+      else if (!error.username && !error.password) setGeneralError("Unexpected error.");
+      return;
+    }
   };
   
   const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
