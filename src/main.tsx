@@ -7,6 +7,7 @@ import {} from './index.css';
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
+import type { AuthCheck } from './lib/permissions';
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -27,7 +28,10 @@ declare module '@tanstack/react-router' {
     breadcrumb ?: {
       getTitle  : () => string;
       getLink  ?: () => LinkProps;  
-    }
+    },
+
+    /** Authentication checks performed for navbar */
+    auth ?: AuthCheck[];
   }
 }
 

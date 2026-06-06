@@ -1,4 +1,6 @@
+import type { ReactFormApi } from "@tanstack/react-form";
 import type { KeyboardEventHandler } from "react";
+import type { StringDeepKeys } from "./Layout";
 
 const inputBase =
   "w-full h-[38px] px-3 text-[13.5px] border outline-none transition-all duration-150 rounded-none";
@@ -49,4 +51,27 @@ export function TextField (props: TextFieldProps) {
       )}
     </>
   );
+}
+
+interface FormTextFieldProps<TFormData> {
+  fieldName: StringDeepKeys<TFormData>;
+  
+  form: ReactFormApi<TFormData, any, any, any, any, any, any, any, any, any, any, any>
+  
+  title: string
+  placeholder: string
+  type: string
+}
+
+export function FormTextField<TFormData> (props: FormTextFieldProps<TFormData>) {
+  return <props.form.Field name={props.fieldName}
+      children={(field) => {
+          const handleChange = (value: string) => (field.handleChange as any)(value);
+
+          return <TextField type={props.type} title={props.title} error={
+            field.state.meta.isTouched && !field.state.meta.isValid ? field.state.meta.errors.map(e => e?.message ?? e).join(',') : ""
+          } placeholder={props.placeholder}
+              setValue={handleChange} setError={() => {}} value={field.state.value as string} />;
+      }}
+  />
 }

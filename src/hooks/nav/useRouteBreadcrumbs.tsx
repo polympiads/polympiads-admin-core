@@ -6,9 +6,18 @@ export default function useRouteBreadcrumbs (): BreadcrumbsProps {
 
     return {
         "breadcrumbs": matches
-            .map(match => match.staticData.breadcrumb)
+            .map(match => {
+                const brd = match.staticData.breadcrumb;
+
+                if (brd === undefined) {
+                    return undefined;
+                }
+
+                return { route: match.routeId, brd: brd }
+            })
             .filter(match => match !== undefined)
-            .map( brd => ({
+            .map( ({route, brd}) => ({
+                "id": route,
                 "label": brd.getTitle,
                 "link" : brd.getLink
             }) )

@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import TableComponent from '../../../../components/table/TableComponent'
 import { authUsersList, type AuthUserList } from '../../../../client'
 import { BooleanDotCell } from '../../../../components/table/cells/BooleanCell'
@@ -7,6 +7,8 @@ import usePageQuery from '../../../../hooks/usePageQuery'
 import { useCallback } from 'react'
 import useOrderingQuery from '../../../../hooks/useOrderingQuery'
 import type { SortingState } from '@tanstack/react-table'
+import { AUTH_USERS_ADD, HasPermission, IfChecks } from '../../../../lib/permissions'
+import Plus from '../../../../components/icons/Plus'
 
 export const Route = createFileRoute("/dashboard/auth/users/")({
   component: UsersList,
@@ -34,7 +36,19 @@ function UsersList () {
   }, [sort, page]);
 
   return <>
-    <div>Users List</div>
+    <div className="flex">
+      <p>Users List</p>
+      <div className="flex-1"></div>
+      <IfChecks checks={[ HasPermission(AUTH_USERS_ADD) ]}>
+        <Link
+          to="/dashboard/auth/users/create"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors text-gray-500 hover:text-gray-600 text-[11.5px] font-medium tracking-[0.04em]"
+        >
+          <Plus size={14} className="-ml-0.5" />
+          Add User
+        </Link>
+      </IfChecks>
+    </div>
     <TableComponent<AuthUserList>
       tableKind="user-table"
       columns={[

@@ -1,6 +1,8 @@
 
 import Spinner from "../icons/Spinner.tsx";
 
+export type ButtonVariant = "primary";
+
 export interface ButtonProps {
     onClick: () => void;
     loading: boolean;
@@ -8,7 +10,7 @@ export interface ButtonProps {
     text : string;
     loadingText ?: string;
 
-    variant : "primary";
+    variant : ButtonVariant;
 };
 
 export function Button (props: ButtonProps) {

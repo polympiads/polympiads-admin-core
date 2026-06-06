@@ -17,18 +17,28 @@ import useRouteBreadcrumbs from '../../hooks/nav/useRouteBreadcrumbs';
 import useRouteNavigation from '../../hooks/nav/useRouteNavigation';
 import { useAuth } from '../../lib/auth';
 import { useEffect } from 'react';
+import useRouteAuthentication from '../../hooks/nav/useRouteAuthentication';
+import { checksPass } from '../../lib/permissions';
 
 function DashboardLayout() {
-  const breadcrumbsInfo = useRouteBreadcrumbs();
-  const navbarInfo      = useRouteNavigation();
-
   const { user, loading } = useAuth();
+
+  const breadcrumbsInfo = useRouteBreadcrumbs();
+  const navbarInfo      = useRouteNavigation(user);
+
   const navigate = useNavigate();
+
+  const authentication = useRouteAuthentication();
+
   useEffect(() => {
-    if (!loading && user === null) {
-      navigate({ to: "/login" });
+    if (!loading) {
+      if (user === null) {
+        navigate({ to: "/login" });
+      } else if (!checksPass(authentication, user)) {
+        navigate({ to: "/dashboard" });
+      }
     }
-  }, [user, loading]);
+  }, [user, loading, authentication]);
  
   return (
     <>

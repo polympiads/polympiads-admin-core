@@ -36,6 +36,34 @@ export function hasPermission (user: AuthUserDetail | null, permission: string) 
     return isInGroups(user.groups) || isInPermissions(user.permissions);
 }
 
+export function verifyAuthentication (
+  authentication: ({
+    is_superuser_needed: true;
+  } | {
+    is_superuser_needed?: false | undefined;
+    permissions_needed: string[];
+  })[],
+  user: AuthUserDetail
+) {
+  if (user.is_superuser) {
+    return true;
+  }
+
+  for (const auth of authentication) {
+    if (auth.is_superuser_needed) {
+      return false;
+    }
+
+    for (const perm of auth.permissions_needed) {
+      if (!hasPermission(user, perm)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUserDetail | null>(null);
   const [loading, setLoading] = useState(true);

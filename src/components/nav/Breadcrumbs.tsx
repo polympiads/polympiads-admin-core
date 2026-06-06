@@ -3,6 +3,8 @@ import { Link, type LinkProps } from '@tanstack/react-router'
 import ChevronRight from '../icons/ChevronRight';
 
 type Breadcrumb = {
+    id : string;
+    
     label : () => string;
     link ?: () => LinkProps;
 };
@@ -41,7 +43,7 @@ export default function Breadcrumbs (props: BreadcrumbsProps) {
                 : [ <ChevronRight key={`${index}-chv`} size={20} className="text-[#b8c8d4]"/> ]
             ),
             <Breadcrumb
-                key={`${index}-brd`}
+                key={value.id}
                 breadcrumb={value}
                 isActive={index == props.breadcrumbs.length - 1}/>
         ]

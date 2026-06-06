@@ -16,6 +16,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardAuthRouteRouteImport } from './routes/dashboard/auth/route'
 import { Route as DashboardAuthUsersRouteRouteImport } from './routes/dashboard/auth/users/route'
 import { Route as DashboardAuthUsersIndexRouteImport } from './routes/dashboard/auth/users/index'
+import { Route as DashboardAuthUsersCreateRouteImport } from './routes/dashboard/auth/users/create'
 import { Route as DashboardAuthUsersUseridRouteImport } from './routes/dashboard/auth/users/$userid'
 
 const LoginRoute = LoginRouteImport.update({
@@ -53,6 +54,12 @@ const DashboardAuthUsersIndexRoute = DashboardAuthUsersIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardAuthUsersRouteRoute,
 } as any)
+const DashboardAuthUsersCreateRoute =
+  DashboardAuthUsersCreateRouteImport.update({
+    id: '/create',
+    path: '/create',
+    getParentRoute: () => DashboardAuthUsersRouteRoute,
+  } as any)
 const DashboardAuthUsersUseridRoute =
   DashboardAuthUsersUseridRouteImport.update({
     id: '/$userid',
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
+  '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
   '/dashboard/auth/users/': typeof DashboardAuthUsersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -76,6 +84,7 @@ export interface FileRoutesByTo {
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
+  '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
   '/dashboard/auth/users': typeof DashboardAuthUsersIndexRoute
 }
 export interface FileRoutesById {
@@ -87,6 +96,7 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
+  '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
   '/dashboard/auth/users/': typeof DashboardAuthUsersIndexRoute
 }
 export interface FileRouteTypes {
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/auth/users'
     | '/dashboard/auth/users/$userid'
+    | '/dashboard/auth/users/create'
     | '/dashboard/auth/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/dashboard/auth'
     | '/dashboard'
     | '/dashboard/auth/users/$userid'
+    | '/dashboard/auth/users/create'
     | '/dashboard/auth/users'
   id:
     | '__root__'
@@ -117,6 +129,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/auth/users'
     | '/dashboard/auth/users/$userid'
+    | '/dashboard/auth/users/create'
     | '/dashboard/auth/users/'
   fileRoutesById: FileRoutesById
 }
@@ -177,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthUsersIndexRouteImport
       parentRoute: typeof DashboardAuthUsersRouteRoute
     }
+    '/dashboard/auth/users/create': {
+      id: '/dashboard/auth/users/create'
+      path: '/create'
+      fullPath: '/dashboard/auth/users/create'
+      preLoaderRoute: typeof DashboardAuthUsersCreateRouteImport
+      parentRoute: typeof DashboardAuthUsersRouteRoute
+    }
     '/dashboard/auth/users/$userid': {
       id: '/dashboard/auth/users/$userid'
       path: '/$userid'
@@ -189,12 +209,14 @@ declare module '@tanstack/react-router' {
 
 interface DashboardAuthUsersRouteRouteChildren {
   DashboardAuthUsersUseridRoute: typeof DashboardAuthUsersUseridRoute
+  DashboardAuthUsersCreateRoute: typeof DashboardAuthUsersCreateRoute
   DashboardAuthUsersIndexRoute: typeof DashboardAuthUsersIndexRoute
 }
 
 const DashboardAuthUsersRouteRouteChildren: DashboardAuthUsersRouteRouteChildren =
   {
     DashboardAuthUsersUseridRoute: DashboardAuthUsersUseridRoute,
+    DashboardAuthUsersCreateRoute: DashboardAuthUsersCreateRoute,
     DashboardAuthUsersIndexRoute: DashboardAuthUsersIndexRoute,
   }
 
