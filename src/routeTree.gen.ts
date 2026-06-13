@@ -23,6 +23,7 @@ import { Route as DashboardAuthGroupsIndexRouteImport } from './routes/dashboard
 import { Route as DashboardAuthUsersCreateRouteImport } from './routes/dashboard/auth/users/create'
 import { Route as DashboardAuthUsersUseridRouteImport } from './routes/dashboard/auth/users/$userid'
 import { Route as DashboardAuthPermissionsPermidRouteImport } from './routes/dashboard/auth/permissions/$permid'
+import { Route as DashboardAuthGroupsCreateRouteImport } from './routes/dashboard/auth/groups/create'
 import { Route as DashboardAuthGroupsGroupidRouteImport } from './routes/dashboard/auth/groups/$groupid'
 
 const LoginRoute = LoginRouteImport.update({
@@ -102,6 +103,12 @@ const DashboardAuthPermissionsPermidRoute =
     path: '/$permid',
     getParentRoute: () => DashboardAuthPermissionsRouteRoute,
   } as any)
+const DashboardAuthGroupsCreateRoute =
+  DashboardAuthGroupsCreateRouteImport.update({
+    id: '/create',
+    path: '/create',
+    getParentRoute: () => DashboardAuthGroupsRouteRoute,
+  } as any)
 const DashboardAuthGroupsGroupidRoute =
   DashboardAuthGroupsGroupidRouteImport.update({
     id: '/$groupid',
@@ -119,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/auth/permissions': typeof DashboardAuthPermissionsRouteRouteWithChildren
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
   '/dashboard/auth/groups/$groupid': typeof DashboardAuthGroupsGroupidRoute
+  '/dashboard/auth/groups/create': typeof DashboardAuthGroupsCreateRoute
   '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
@@ -132,6 +140,7 @@ export interface FileRoutesByTo {
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/auth/groups/$groupid': typeof DashboardAuthGroupsGroupidRoute
+  '/dashboard/auth/groups/create': typeof DashboardAuthGroupsCreateRoute
   '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
@@ -150,6 +159,7 @@ export interface FileRoutesById {
   '/dashboard/auth/permissions': typeof DashboardAuthPermissionsRouteRouteWithChildren
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
   '/dashboard/auth/groups/$groupid': typeof DashboardAuthGroupsGroupidRoute
+  '/dashboard/auth/groups/create': typeof DashboardAuthGroupsCreateRoute
   '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
     | '/dashboard/auth/groups/$groupid'
+    | '/dashboard/auth/groups/create'
     | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/dashboard/auth'
     | '/dashboard'
     | '/dashboard/auth/groups/$groupid'
+    | '/dashboard/auth/groups/create'
     | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
@@ -199,6 +211,7 @@ export interface FileRouteTypes {
     | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
     | '/dashboard/auth/groups/$groupid'
+    | '/dashboard/auth/groups/create'
     | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
@@ -313,6 +326,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthPermissionsPermidRouteImport
       parentRoute: typeof DashboardAuthPermissionsRouteRoute
     }
+    '/dashboard/auth/groups/create': {
+      id: '/dashboard/auth/groups/create'
+      path: '/create'
+      fullPath: '/dashboard/auth/groups/create'
+      preLoaderRoute: typeof DashboardAuthGroupsCreateRouteImport
+      parentRoute: typeof DashboardAuthGroupsRouteRoute
+    }
     '/dashboard/auth/groups/$groupid': {
       id: '/dashboard/auth/groups/$groupid'
       path: '/$groupid'
@@ -325,12 +345,14 @@ declare module '@tanstack/react-router' {
 
 interface DashboardAuthGroupsRouteRouteChildren {
   DashboardAuthGroupsGroupidRoute: typeof DashboardAuthGroupsGroupidRoute
+  DashboardAuthGroupsCreateRoute: typeof DashboardAuthGroupsCreateRoute
   DashboardAuthGroupsIndexRoute: typeof DashboardAuthGroupsIndexRoute
 }
 
 const DashboardAuthGroupsRouteRouteChildren: DashboardAuthGroupsRouteRouteChildren =
   {
     DashboardAuthGroupsGroupidRoute: DashboardAuthGroupsGroupidRoute,
+    DashboardAuthGroupsCreateRoute: DashboardAuthGroupsCreateRoute,
     DashboardAuthGroupsIndexRoute: DashboardAuthGroupsIndexRoute,
   }
 
