@@ -4,6 +4,7 @@ import { getCoreRowModel, useReactTable, type ColumnDef, type SortingState } fro
 import { TableBody } from "./TableBody";
 import { useTablePreferences } from "./TablePreferences";
 import TableFooter from "./TableFooter";
+import type { LinkProps } from "@tanstack/react-router";
 
 export interface PaginatedResults<T> {
   count   : number
@@ -17,6 +18,8 @@ export type Column<T, V> = ColumnDef<T, V> & ({
 
 export interface TableProps<T> {
   tableKind: string,
+
+  redirect ?: (data: T) => LinkProps,
 
   page: {
     index: number,
@@ -147,7 +150,7 @@ export default function TableComponent<T> (props: TableProps<T>) {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-xs">
             <TableHeader table={table} />
-            <TableBody   table={table} />
+            <TableBody   table={table} redirect={props.redirect} />
           </table>
         </div>
 

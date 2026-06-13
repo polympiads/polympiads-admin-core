@@ -51,6 +51,10 @@ function UsersList () {
     </div>
     <TableComponent<AuthUserList>
       tableKind="user-table"
+      redirect={(user: AuthUserList) => ({
+        to: "/dashboard/auth/users/$userid",
+        params: { userid: user.id.toString() }
+      })}
       columns={[
         { header: "Username",     accessorKey: "username",     enableHiding: false },
         { header: "Email",        accessorKey: "email",        defaultVisible: false },

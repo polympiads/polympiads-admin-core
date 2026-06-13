@@ -15,9 +15,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardAuthRouteRouteImport } from './routes/dashboard/auth/route'
 import { Route as DashboardAuthUsersRouteRouteImport } from './routes/dashboard/auth/users/route'
+import { Route as DashboardAuthPermissionsRouteRouteImport } from './routes/dashboard/auth/permissions/route'
 import { Route as DashboardAuthUsersIndexRouteImport } from './routes/dashboard/auth/users/index'
+import { Route as DashboardAuthPermissionsIndexRouteImport } from './routes/dashboard/auth/permissions/index'
 import { Route as DashboardAuthUsersCreateRouteImport } from './routes/dashboard/auth/users/create'
 import { Route as DashboardAuthUsersUseridRouteImport } from './routes/dashboard/auth/users/$userid'
+import { Route as DashboardAuthPermissionsPermidRouteImport } from './routes/dashboard/auth/permissions/$permid'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -49,11 +52,23 @@ const DashboardAuthUsersRouteRoute = DashboardAuthUsersRouteRouteImport.update({
   path: '/users',
   getParentRoute: () => DashboardAuthRouteRoute,
 } as any)
+const DashboardAuthPermissionsRouteRoute =
+  DashboardAuthPermissionsRouteRouteImport.update({
+    id: '/permissions',
+    path: '/permissions',
+    getParentRoute: () => DashboardAuthRouteRoute,
+  } as any)
 const DashboardAuthUsersIndexRoute = DashboardAuthUsersIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardAuthUsersRouteRoute,
 } as any)
+const DashboardAuthPermissionsIndexRoute =
+  DashboardAuthPermissionsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardAuthPermissionsRouteRoute,
+  } as any)
 const DashboardAuthUsersCreateRoute =
   DashboardAuthUsersCreateRouteImport.update({
     id: '/create',
@@ -66,6 +81,12 @@ const DashboardAuthUsersUseridRoute =
     path: '/$userid',
     getParentRoute: () => DashboardAuthUsersRouteRoute,
   } as any)
+const DashboardAuthPermissionsPermidRoute =
+  DashboardAuthPermissionsPermidRouteImport.update({
+    id: '/$permid',
+    path: '/$permid',
+    getParentRoute: () => DashboardAuthPermissionsRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,9 +94,12 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/auth/permissions': typeof DashboardAuthPermissionsRouteRouteWithChildren
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
+  '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
+  '/dashboard/auth/permissions/': typeof DashboardAuthPermissionsIndexRoute
   '/dashboard/auth/users/': typeof DashboardAuthUsersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -83,8 +107,10 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
+  '/dashboard/auth/permissions': typeof DashboardAuthPermissionsIndexRoute
   '/dashboard/auth/users': typeof DashboardAuthUsersIndexRoute
 }
 export interface FileRoutesById {
@@ -94,9 +120,12 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/auth/permissions': typeof DashboardAuthPermissionsRouteRouteWithChildren
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
+  '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
+  '/dashboard/auth/permissions/': typeof DashboardAuthPermissionsIndexRoute
   '/dashboard/auth/users/': typeof DashboardAuthUsersIndexRoute
 }
 export interface FileRouteTypes {
@@ -107,9 +136,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/auth'
     | '/dashboard/'
+    | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
+    | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
+    | '/dashboard/auth/permissions/'
     | '/dashboard/auth/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -117,8 +149,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/auth'
     | '/dashboard'
+    | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
+    | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
   id:
     | '__root__'
@@ -127,9 +161,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/auth'
     | '/dashboard/'
+    | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
+    | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
+    | '/dashboard/auth/permissions/'
     | '/dashboard/auth/users/'
   fileRoutesById: FileRoutesById
 }
@@ -183,12 +220,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthUsersRouteRouteImport
       parentRoute: typeof DashboardAuthRouteRoute
     }
+    '/dashboard/auth/permissions': {
+      id: '/dashboard/auth/permissions'
+      path: '/permissions'
+      fullPath: '/dashboard/auth/permissions'
+      preLoaderRoute: typeof DashboardAuthPermissionsRouteRouteImport
+      parentRoute: typeof DashboardAuthRouteRoute
+    }
     '/dashboard/auth/users/': {
       id: '/dashboard/auth/users/'
       path: '/'
       fullPath: '/dashboard/auth/users/'
       preLoaderRoute: typeof DashboardAuthUsersIndexRouteImport
       parentRoute: typeof DashboardAuthUsersRouteRoute
+    }
+    '/dashboard/auth/permissions/': {
+      id: '/dashboard/auth/permissions/'
+      path: '/'
+      fullPath: '/dashboard/auth/permissions/'
+      preLoaderRoute: typeof DashboardAuthPermissionsIndexRouteImport
+      parentRoute: typeof DashboardAuthPermissionsRouteRoute
     }
     '/dashboard/auth/users/create': {
       id: '/dashboard/auth/users/create'
@@ -204,8 +255,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthUsersUseridRouteImport
       parentRoute: typeof DashboardAuthUsersRouteRoute
     }
+    '/dashboard/auth/permissions/$permid': {
+      id: '/dashboard/auth/permissions/$permid'
+      path: '/$permid'
+      fullPath: '/dashboard/auth/permissions/$permid'
+      preLoaderRoute: typeof DashboardAuthPermissionsPermidRouteImport
+      parentRoute: typeof DashboardAuthPermissionsRouteRoute
+    }
   }
 }
+
+interface DashboardAuthPermissionsRouteRouteChildren {
+  DashboardAuthPermissionsPermidRoute: typeof DashboardAuthPermissionsPermidRoute
+  DashboardAuthPermissionsIndexRoute: typeof DashboardAuthPermissionsIndexRoute
+}
+
+const DashboardAuthPermissionsRouteRouteChildren: DashboardAuthPermissionsRouteRouteChildren =
+  {
+    DashboardAuthPermissionsPermidRoute: DashboardAuthPermissionsPermidRoute,
+    DashboardAuthPermissionsIndexRoute: DashboardAuthPermissionsIndexRoute,
+  }
+
+const DashboardAuthPermissionsRouteRouteWithChildren =
+  DashboardAuthPermissionsRouteRoute._addFileChildren(
+    DashboardAuthPermissionsRouteRouteChildren,
+  )
 
 interface DashboardAuthUsersRouteRouteChildren {
   DashboardAuthUsersUseridRoute: typeof DashboardAuthUsersUseridRoute
@@ -226,10 +300,13 @@ const DashboardAuthUsersRouteRouteWithChildren =
   )
 
 interface DashboardAuthRouteRouteChildren {
+  DashboardAuthPermissionsRouteRoute: typeof DashboardAuthPermissionsRouteRouteWithChildren
   DashboardAuthUsersRouteRoute: typeof DashboardAuthUsersRouteRouteWithChildren
 }
 
 const DashboardAuthRouteRouteChildren: DashboardAuthRouteRouteChildren = {
+  DashboardAuthPermissionsRouteRoute:
+    DashboardAuthPermissionsRouteRouteWithChildren,
   DashboardAuthUsersRouteRoute: DashboardAuthUsersRouteRouteWithChildren,
 }
 

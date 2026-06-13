@@ -1,6 +1,7 @@
+import { Link, type LinkProps } from "@tanstack/react-router";
 import { flexRender, type Table } from "@tanstack/react-table";
 
-export function TableBody<T> (props: { table: Table<T> }) {
+export function TableBody<T> (props: { table: Table<T>, redirect ?: (data: T) => LinkProps, }) {
     const table = props.table;
 
     return <tbody>
@@ -15,24 +16,32 @@ export function TableBody<T> (props: { table: Table<T> }) {
         </tr>
     ) : (
         table.getRowModel().rows.map((row) => {
-        const isSelected = row.getIsSelected();
-        return (
-            <tr
-            key={row.id}
-            className={`border-b border-gray-200 transition-colors
-                ${isSelected ? "bg-blue-50" : "hover:bg-gray-50"}`}
-            >
-            {/* TODO add back selection checkboxes */
-            /*<td className="px-2 py-2 text-center">
-                Y
-            </td>*/}
-            {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-3 py-2 max-w-[200px] truncate">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-            ))}
-            </tr>
-        );
+            const isSelected = row.getIsSelected();
+            const linkProps = props?.redirect?.(row.original);
+            return (
+                <tr
+                key={row.id}
+                className={`border-b border-gray-200 transition-colors relative 
+                    ${isSelected ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                >
+                {/* TODO add back selection checkboxes */
+                /*<td className="px-2 py-2 text-center">
+                    Y
+                </td>*/}
+                {row.getVisibleCells().map((cell, index) => (
+                    <td key={cell.id} className="px-3 py-2 max-w-[200px] truncate">
+                        {index === 0 && linkProps && (
+                                <Link
+                                    {...linkProps}
+                                    className="absolute inset-0 z-0"
+                                    aria-label="Open row"
+                                />
+                            )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                ))}
+                </tr>
+            );
         })
     )}
     </tbody>

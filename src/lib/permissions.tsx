@@ -8,6 +8,9 @@ export const AUTH_USERS_ADD    = "polympiads_auth.add_user"
 export const AUTH_USERS_CHANGE = "polympiads_auth.change_user"
 export const AUTH_USERS_DELETE = "polympiads_auth.delete_user"
 
+export const AUTH_PERMISSIONS_VIEW = "auth.view_permission"
+// Permissions do not have Add / Change / Delete permissions 
+
 export type AuthCheck = (user: AuthUserDetail | null) => boolean;
 
 export function IsSuperuser (user: AuthUserDetail | null) {

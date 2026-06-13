@@ -6,9 +6,13 @@ export function BooleanBadge({ value }: { value: boolean }) {
     : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">No</span>
 }
 
-export function BooleanDot({ value }: { value: boolean }) {
+export function BooleanDot({ value, isSkeleton }: { value: boolean, isSkeleton?: boolean }) {
+  if (isSkeleton) {
+    return <span className="block w-2 h-2 rounded-full animate-pulse bg-gray-300" />
+  }
+  
   return (
-    <span className={`inline-block w-2 h-2 rounded-full ${value ? 'bg-green-500' : 'bg-gray-300'}`} />
+    <span className={`block w-2 h-2 rounded-full ${value ? 'bg-green-500' : 'bg-gray-300'}`} />
   )
 }
 
