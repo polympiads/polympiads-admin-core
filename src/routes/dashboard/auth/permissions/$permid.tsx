@@ -39,11 +39,11 @@ function UserInfo () {
 
   useEffect(() => { loadData() }, [permId]);
 
-  if (perm === null) {
+  if (perm === null && !loading) {
     return <>Could not fetch permission.</>
   }
 
-  const title = `Permission #${perm.id}`;
+  const title = `Permission #${perm?.id}`;
 
   return <>
     <div>{title}</div>

@@ -16,11 +16,14 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardAuthRouteRouteImport } from './routes/dashboard/auth/route'
 import { Route as DashboardAuthUsersRouteRouteImport } from './routes/dashboard/auth/users/route'
 import { Route as DashboardAuthPermissionsRouteRouteImport } from './routes/dashboard/auth/permissions/route'
+import { Route as DashboardAuthGroupsRouteRouteImport } from './routes/dashboard/auth/groups/route'
 import { Route as DashboardAuthUsersIndexRouteImport } from './routes/dashboard/auth/users/index'
 import { Route as DashboardAuthPermissionsIndexRouteImport } from './routes/dashboard/auth/permissions/index'
+import { Route as DashboardAuthGroupsIndexRouteImport } from './routes/dashboard/auth/groups/index'
 import { Route as DashboardAuthUsersCreateRouteImport } from './routes/dashboard/auth/users/create'
 import { Route as DashboardAuthUsersUseridRouteImport } from './routes/dashboard/auth/users/$userid'
 import { Route as DashboardAuthPermissionsPermidRouteImport } from './routes/dashboard/auth/permissions/$permid'
+import { Route as DashboardAuthGroupsGroupidRouteImport } from './routes/dashboard/auth/groups/$groupid'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -58,6 +61,12 @@ const DashboardAuthPermissionsRouteRoute =
     path: '/permissions',
     getParentRoute: () => DashboardAuthRouteRoute,
   } as any)
+const DashboardAuthGroupsRouteRoute =
+  DashboardAuthGroupsRouteRouteImport.update({
+    id: '/groups',
+    path: '/groups',
+    getParentRoute: () => DashboardAuthRouteRoute,
+  } as any)
 const DashboardAuthUsersIndexRoute = DashboardAuthUsersIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -68,6 +77,12 @@ const DashboardAuthPermissionsIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => DashboardAuthPermissionsRouteRoute,
+  } as any)
+const DashboardAuthGroupsIndexRoute =
+  DashboardAuthGroupsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardAuthGroupsRouteRoute,
   } as any)
 const DashboardAuthUsersCreateRoute =
   DashboardAuthUsersCreateRouteImport.update({
@@ -87,6 +102,12 @@ const DashboardAuthPermissionsPermidRoute =
     path: '/$permid',
     getParentRoute: () => DashboardAuthPermissionsRouteRoute,
   } as any)
+const DashboardAuthGroupsGroupidRoute =
+  DashboardAuthGroupsGroupidRouteImport.update({
+    id: '/$groupid',
+    path: '/$groupid',
+    getParentRoute: () => DashboardAuthGroupsRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,11 +115,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/auth/groups': typeof DashboardAuthGroupsRouteRouteWithChildren
   '/dashboard/auth/permissions': typeof DashboardAuthPermissionsRouteRouteWithChildren
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
+  '/dashboard/auth/groups/$groupid': typeof DashboardAuthGroupsGroupidRoute
   '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
+  '/dashboard/auth/groups/': typeof DashboardAuthGroupsIndexRoute
   '/dashboard/auth/permissions/': typeof DashboardAuthPermissionsIndexRoute
   '/dashboard/auth/users/': typeof DashboardAuthUsersIndexRoute
 }
@@ -107,9 +131,11 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/auth/groups/$groupid': typeof DashboardAuthGroupsGroupidRoute
   '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
+  '/dashboard/auth/groups': typeof DashboardAuthGroupsIndexRoute
   '/dashboard/auth/permissions': typeof DashboardAuthPermissionsIndexRoute
   '/dashboard/auth/users': typeof DashboardAuthUsersIndexRoute
 }
@@ -120,11 +146,14 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/dashboard/auth': typeof DashboardAuthRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/auth/groups': typeof DashboardAuthGroupsRouteRouteWithChildren
   '/dashboard/auth/permissions': typeof DashboardAuthPermissionsRouteRouteWithChildren
   '/dashboard/auth/users': typeof DashboardAuthUsersRouteRouteWithChildren
+  '/dashboard/auth/groups/$groupid': typeof DashboardAuthGroupsGroupidRoute
   '/dashboard/auth/permissions/$permid': typeof DashboardAuthPermissionsPermidRoute
   '/dashboard/auth/users/$userid': typeof DashboardAuthUsersUseridRoute
   '/dashboard/auth/users/create': typeof DashboardAuthUsersCreateRoute
+  '/dashboard/auth/groups/': typeof DashboardAuthGroupsIndexRoute
   '/dashboard/auth/permissions/': typeof DashboardAuthPermissionsIndexRoute
   '/dashboard/auth/users/': typeof DashboardAuthUsersIndexRoute
 }
@@ -136,11 +165,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/auth'
     | '/dashboard/'
+    | '/dashboard/auth/groups'
     | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
+    | '/dashboard/auth/groups/$groupid'
     | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
+    | '/dashboard/auth/groups/'
     | '/dashboard/auth/permissions/'
     | '/dashboard/auth/users/'
   fileRoutesByTo: FileRoutesByTo
@@ -149,9 +181,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/auth'
     | '/dashboard'
+    | '/dashboard/auth/groups/$groupid'
     | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
+    | '/dashboard/auth/groups'
     | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
   id:
@@ -161,11 +195,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/auth'
     | '/dashboard/'
+    | '/dashboard/auth/groups'
     | '/dashboard/auth/permissions'
     | '/dashboard/auth/users'
+    | '/dashboard/auth/groups/$groupid'
     | '/dashboard/auth/permissions/$permid'
     | '/dashboard/auth/users/$userid'
     | '/dashboard/auth/users/create'
+    | '/dashboard/auth/groups/'
     | '/dashboard/auth/permissions/'
     | '/dashboard/auth/users/'
   fileRoutesById: FileRoutesById
@@ -227,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthPermissionsRouteRouteImport
       parentRoute: typeof DashboardAuthRouteRoute
     }
+    '/dashboard/auth/groups': {
+      id: '/dashboard/auth/groups'
+      path: '/groups'
+      fullPath: '/dashboard/auth/groups'
+      preLoaderRoute: typeof DashboardAuthGroupsRouteRouteImport
+      parentRoute: typeof DashboardAuthRouteRoute
+    }
     '/dashboard/auth/users/': {
       id: '/dashboard/auth/users/'
       path: '/'
@@ -240,6 +284,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/auth/permissions/'
       preLoaderRoute: typeof DashboardAuthPermissionsIndexRouteImport
       parentRoute: typeof DashboardAuthPermissionsRouteRoute
+    }
+    '/dashboard/auth/groups/': {
+      id: '/dashboard/auth/groups/'
+      path: '/'
+      fullPath: '/dashboard/auth/groups/'
+      preLoaderRoute: typeof DashboardAuthGroupsIndexRouteImport
+      parentRoute: typeof DashboardAuthGroupsRouteRoute
     }
     '/dashboard/auth/users/create': {
       id: '/dashboard/auth/users/create'
@@ -262,8 +313,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthPermissionsPermidRouteImport
       parentRoute: typeof DashboardAuthPermissionsRouteRoute
     }
+    '/dashboard/auth/groups/$groupid': {
+      id: '/dashboard/auth/groups/$groupid'
+      path: '/$groupid'
+      fullPath: '/dashboard/auth/groups/$groupid'
+      preLoaderRoute: typeof DashboardAuthGroupsGroupidRouteImport
+      parentRoute: typeof DashboardAuthGroupsRouteRoute
+    }
   }
 }
+
+interface DashboardAuthGroupsRouteRouteChildren {
+  DashboardAuthGroupsGroupidRoute: typeof DashboardAuthGroupsGroupidRoute
+  DashboardAuthGroupsIndexRoute: typeof DashboardAuthGroupsIndexRoute
+}
+
+const DashboardAuthGroupsRouteRouteChildren: DashboardAuthGroupsRouteRouteChildren =
+  {
+    DashboardAuthGroupsGroupidRoute: DashboardAuthGroupsGroupidRoute,
+    DashboardAuthGroupsIndexRoute: DashboardAuthGroupsIndexRoute,
+  }
+
+const DashboardAuthGroupsRouteRouteWithChildren =
+  DashboardAuthGroupsRouteRoute._addFileChildren(
+    DashboardAuthGroupsRouteRouteChildren,
+  )
 
 interface DashboardAuthPermissionsRouteRouteChildren {
   DashboardAuthPermissionsPermidRoute: typeof DashboardAuthPermissionsPermidRoute
@@ -300,11 +374,13 @@ const DashboardAuthUsersRouteRouteWithChildren =
   )
 
 interface DashboardAuthRouteRouteChildren {
+  DashboardAuthGroupsRouteRoute: typeof DashboardAuthGroupsRouteRouteWithChildren
   DashboardAuthPermissionsRouteRoute: typeof DashboardAuthPermissionsRouteRouteWithChildren
   DashboardAuthUsersRouteRoute: typeof DashboardAuthUsersRouteRouteWithChildren
 }
 
 const DashboardAuthRouteRouteChildren: DashboardAuthRouteRouteChildren = {
+  DashboardAuthGroupsRouteRoute: DashboardAuthGroupsRouteRouteWithChildren,
   DashboardAuthPermissionsRouteRoute:
     DashboardAuthPermissionsRouteRouteWithChildren,
   DashboardAuthUsersRouteRoute: DashboardAuthUsersRouteRouteWithChildren,

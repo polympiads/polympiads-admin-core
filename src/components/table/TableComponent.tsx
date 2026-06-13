@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { TableHeader } from "./TableHeader";
-import { getCoreRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
+import { getCoreRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
 import { TableBody } from "./TableBody";
 import { useTablePreferences } from "./TablePreferences";
 import TableFooter from "./TableFooter";
@@ -11,6 +11,21 @@ export interface PaginatedResults<T> {
   results : T[]
 };
 
+export function useInMemoryQuery<T> (data: () => Promise<T[] | undefined>): (sortParam: string, page: number, page_size: number) => Promise<PaginatedResults<T> | undefined> {
+  return useCallback(async (_sortParam: string, _page: number, _page_size: number) => {
+    const res = await data();
+
+    if (res === undefined) {
+      return undefined;
+    }
+
+    return {
+      count: res.length,
+      results: res
+    };
+  }, [data]);
+}
+
 export type Column<T, V> = ColumnDef<T, V> & ({
   enableHiding ?: true,
   defaultVisible : boolean 
@@ -18,6 +33,11 @@ export type Column<T, V> = ColumnDef<T, V> & ({
 
 export interface TableProps<T> {
   tableKind: string,
+
+  footerDisabled?: boolean,
+  inMemory ?: boolean,
+
+  noneText: string,
 
   redirect ?: (data: T) => LinkProps,
 
@@ -68,9 +88,10 @@ export default function TableComponent<T> (props: TableProps<T>) {
     },
 
     manualPagination: true,
-    manualSorting: true,
+    manualSorting:    props.inMemory === true ? false : true,
     
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     onSortingChange: (updater) => {
       const newSorting = typeof updater === "function"
         ? updater(props.sorting.sortingState)
@@ -150,25 +171,27 @@ export default function TableComponent<T> (props: TableProps<T>) {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-xs">
             <TableHeader table={table} />
-            <TableBody   table={table} redirect={props.redirect} />
+            <TableBody   noneText={props.noneText} table={table} redirect={props.redirect} />
           </table>
         </div>
 
         {/* ── Footer ── */}
-        <TableFooter
-          table={table}
-          pageInfo={{
-            index: props.page.index,
-            setPageIndex: props.page.setIndex,
-            size: preferences.page_size,
-            totalRows: total,
-            count: Math.floor((total + preferences.page_size - 1) / preferences.page_size)
-          }}
-          preferences={preferences}
-          setPreferences={setPreferences}
-          lastRefreshed={lastRefreshed}
-          refresh={loadData}
-        />
+        {
+          props.footerDisabled ? <></> : <TableFooter
+            table={table}
+            pageInfo={{
+              index: props.page.index,
+              setPageIndex: props.page.setIndex,
+              size: preferences.page_size,
+              totalRows: total,
+              count: Math.floor((total + preferences.page_size - 1) / preferences.page_size)
+            }}
+            preferences={preferences}
+            setPreferences={setPreferences}
+            lastRefreshed={lastRefreshed}
+            refresh={loadData}
+          />
+        }
       </div>
     </div>
   );

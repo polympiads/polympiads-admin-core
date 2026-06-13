@@ -1,9 +1,13 @@
 import { createFileRoute, useParams, type LinkProps } from '@tanstack/react-router'
-import { useEffect, useState } from 'react';
-import { type AuthUserDetail, authUsersRetrieve } from '../../../../client';
+import { useCallback, useEffect, useState } from 'react';
+import { type AuthGroupDetail, type AuthPermissionDetail, type AuthUserDetail, authUsersRetrieve } from '../../../../client';
 import { StringInfoField } from '../../../../components/fields/StringInfoField';
 import { TitleField } from '../../../../components/fields/TitleField';
 import { BooleanInfoField } from '../../../../components/fields/BooleanInfoField';
+import { GroupTable } from '../tables/GroupsTable';
+import { useInMemoryQuery } from '../../../../components/table/TableComponent';
+import { PermissionTable } from '../tables/PermissionTable';
+import { Label } from '../../../../components/fields/Label';
 
 function useUserId (): any {
   return useParams({ "from": "/dashboard/auth/users/$userid" }).userid;
@@ -41,6 +45,19 @@ function UserInfo () {
 
   useEffect(() => { loadData() }, [userId]);
 
+  const groups = useInMemoryQuery<AuthGroupDetail>(
+    useCallback(
+      async () => user?.groups,
+      [user]
+    )
+  );
+  const perms = useInMemoryQuery<AuthPermissionDetail>(
+    useCallback(
+      async () => user?.permissions,
+      [user]
+    )
+  );
+
   if (!loading && user === null) {
     return <>Could not fetch user.</>
   }
@@ -60,5 +77,21 @@ function UserInfo () {
     <BooleanInfoField label="Is Active" value={user?.is_active} isSkeleton={loading} />
     <BooleanInfoField label="Is Staff" value={user?.is_staff} isSkeleton={loading} />
     <BooleanInfoField label="Is Superuser" value={user?.is_superuser} isSkeleton={loading} />
+
+    <Label label="User Groups" />
+    <GroupTable<AuthGroupDetail>
+      pageQuery={'grp_page'}
+      orderingQuery={'grp_ordering'}
+      kind={'detail'}
+      query={groups}
+      inMemory={true}/>
+
+    <Label label="User Permissions" />
+    <PermissionTable<AuthPermissionDetail>
+      pageQuery={'perm_page'}
+      orderingQuery={'perm_ordering'}
+      kind={'detail'}
+      query={perms}
+      inMemory={true} />
   </>
 }

@@ -1,7 +1,7 @@
 import { Link, type LinkProps } from "@tanstack/react-router";
 import { flexRender, type Table } from "@tanstack/react-table";
 
-export function TableBody<T> (props: { table: Table<T>, redirect ?: (data: T) => LinkProps, }) {
+export function TableBody<T> (props: { noneText: string, table: Table<T>, redirect ?: (data: T) => LinkProps, }) {
     const table = props.table;
 
     return <tbody>
@@ -11,7 +11,7 @@ export function TableBody<T> (props: { table: Table<T>, redirect ?: (data: T) =>
             colSpan={table.getVisibleLeafColumns().length + 1}
             className="text-center py-10 text-gray-400 text-xs"
         >
-            No users found
+            {props.noneText}
         </td>
         </tr>
     ) : (
@@ -33,7 +33,7 @@ export function TableBody<T> (props: { table: Table<T>, redirect ?: (data: T) =>
                         {index === 0 && linkProps && (
                                 <Link
                                     {...linkProps}
-                                    className="absolute inset-0 z-0"
+                                    className="absolute inset-0 z-1"
                                     aria-label="Open row"
                                 />
                             )}

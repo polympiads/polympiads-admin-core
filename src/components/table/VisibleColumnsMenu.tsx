@@ -28,6 +28,14 @@ export function VisibleColumnsMenu<T> (props: { table: Table<T> }) {
         }
     }
 
+    if (
+        props.table.getAllColumns()
+            .filter(col => col.getCanHide())
+            .length == 0
+    ) {
+        return <></>;
+    }
+
     return (
         <div ref={ref} className="relative">
         <button
@@ -44,8 +52,8 @@ export function VisibleColumnsMenu<T> (props: { table: Table<T> }) {
         {open && createPortal(
             <div
                 ref={menuRef}
-                style={{ position: "fixed", bottom: menuPos.bottom, left: menuPos.left }}>
-            <div className="bottom-full mb-1 bg-white border border-gray-200 rounded shadow-md py-1 min-w-[150px] z-50">
+                style={{ position: "fixed", bottom: menuPos.bottom, left: menuPos.left, zIndex: 50 }}>
+            <div className="bottom-full mb-1 bg-white border border-gray-200 rounded shadow-md py-1 min-w-[150px]">
             {props.table.getAllColumns()
                 .filter(col => col.getCanHide())
                 .map((col) => (
