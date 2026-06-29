@@ -5,11 +5,13 @@ import type { Column, PaginatedResults } from "./TableComponent";
 import { useCallback } from "react";
 import TableComponent from "./TableComponent";
 import type { LinkProps } from "@tanstack/react-router";
+import type { SelectionPolicy } from "./select/SelectionPolicy";
 
 export interface ManagedTableProps<T, TKind> {
     pageQuery: string,
     orderingQuery: string,
     inMemory ?: boolean,
+    selectionPolicy: SelectionPolicy<T>,
     kind  : TKind,
     query : (sortParam: string, page: number, page_size: number) => Promise<PaginatedResults<T> | undefined>
 };
@@ -25,7 +27,9 @@ interface SimpleTableProps<T> {
     
     columns   : Column<T, any>[],
     query     : (sortParam: string, page: number, page_size: number) => Promise<PaginatedResults<T> | undefined>;
-    redirect ?: ((data: T) => LinkProps) | undefined
+    redirect ?: ((data: T) => LinkProps) | undefined,
+
+    selectionPolicy ?: SelectionPolicy<T>
 }
 
 export default function SimpleTable<T> (props: SimpleTableProps<T>) {
@@ -60,6 +64,8 @@ export default function SimpleTable<T> (props: SimpleTableProps<T>) {
     
               inMemory={props.inMemory}
               footerDisabled={props.inMemory}
+
+              selectionPolicy={props.selectionPolicy}
               />
           </>
 }

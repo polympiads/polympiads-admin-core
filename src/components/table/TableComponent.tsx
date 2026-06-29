@@ -5,6 +5,7 @@ import { TableBody } from "./TableBody";
 import { useTablePreferences } from "./TablePreferences";
 import TableFooter from "./TableFooter";
 import type { LinkProps } from "@tanstack/react-router";
+import type { SelectionPolicy } from "./select/SelectionPolicy";
 
 export interface PaginatedResults<T> {
   count   : number
@@ -51,7 +52,9 @@ export interface TableProps<T> {
   },
 
   query: (pageSize: number) => Promise<PaginatedResults<T> | undefined>,
-  columns: Column<T, any>[]
+  columns: Column<T, any>[],
+
+  selectionPolicy ?: SelectionPolicy<T>
 };
 
 function computeDefaultVisibility<T> (columns: Column<T, any>[]): { [key: string]: boolean } {
@@ -170,8 +173,8 @@ export default function TableComponent<T> (props: TableProps<T>) {
         {/* ── Table ── */}
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-xs">
-            <TableHeader table={table} />
-            <TableBody   noneText={props.noneText} table={table} redirect={props.redirect} />
+            <TableHeader selectionPolicy={props.selectionPolicy} table={table} />
+            <TableBody   selectionPolicy={props.selectionPolicy} noneText={props.noneText} table={table} redirect={props.redirect} />
           </table>
         </div>
 

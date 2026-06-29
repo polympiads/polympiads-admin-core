@@ -1,5 +1,6 @@
 import { flexRender, type Table } from "@tanstack/react-table";
 import { type JSX, type ReactNode } from "react";
+import type { SelectionPolicy } from "./select/SelectionPolicy";
 
 type HeaderColumnOrdering = "none" | "inactive" | "ascending" | "descending";
 
@@ -29,15 +30,13 @@ function HeaderColumn (props : { content: ReactNode | JSX.Element, ordering: Hea
     </th>
 }
 
-export function TableHeader<T> (props: { table: Table<T> }) {
+export function TableHeader<T> (props: { selectionPolicy ?: SelectionPolicy<T>, table: Table<T> }) {
     const table   = props.table;
     const headers = table.getHeaderGroups()[0].headers;
 
     return <thead>
         <tr className="bg-gray-100 border-b border-gray-300">
-            {/*<th className="w-9 px-2 py-2 text-center">
-                <input className="w-3.5 h-3.5 accent-blue-600 cursor-pointer" type="checkbox"></input>
-            </th>*/}
+            { (props.selectionPolicy !== undefined) && <th className="w-9 px-2 py-2 text-center" /> }
 
             {
                 ...headers.map((header) => 
