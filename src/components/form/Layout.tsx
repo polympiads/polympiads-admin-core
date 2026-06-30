@@ -44,8 +44,6 @@ export type Form<TFormData> = ReactFormApi<TFormData, any, any, any, any, any, a
 function FormInternalRenderer<TData> (props: { form: Form<TData>, layout: AllLayout<TData>, className: string }) {
     const { form, layout, className } = props;
 
-    console.log(layout.input)
-
     if (layout.input === "text") {
         return <div className={className}>
             <FormTextField
@@ -86,7 +84,6 @@ function FormInternalRenderer<TData> (props: { form: Form<TData>, layout: AllLay
     }
 }
 export function FormRenderer<TData> (props: { form: Form<TData>, layout: FormLayout<TData> }) {
-    console.log(props.layout)
     return <>
         {...props.layout.map((layout, index) => 
             <FormInternalRenderer key={index} form={props.form} layout={layout} className="" />

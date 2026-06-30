@@ -1,23 +1,23 @@
 import { createFileRoute, useParams, type LinkProps } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react';
-import { type AuthGroupDetail, authGroupsRetrieve, type AuthPermissionDetail } from '../../../../client';
-import { TitleField } from '../../../../components/fields/TitleField';
-import { useInMemoryQuery } from '../../../../components/table/TableComponent';
-import { PermissionTable } from '../tables/PermissionTable';
-import { Label } from '../../../../components/fields/Label';
+import { type AuthGroupDetail, authGroupsRetrieve, type AuthPermissionDetail } from '../../../../../client';
+import { TitleField } from '../../../../../components/fields/TitleField';
+import { useInMemoryQuery } from '../../../../../components/table/TableComponent';
+import { PermissionTable } from '../../tables/PermissionTable';
+import { Label } from '../../../../../components/fields/Label';
 
 function useGroupId (): any {
-  return useParams({ "from": "/dashboard/auth/groups/$groupid" }).groupid;
+  return useParams({ "from": "/dashboard/auth/groups/$groupid/" }).groupid;
 }
 
-export const Route = createFileRoute("/dashboard/auth/groups/$groupid")({
+export const Route = createFileRoute("/dashboard/auth/groups/$groupid/")({
   component: UserInfo,
   staticData: {
     breadcrumb: {
       getTitle: () => `Group #${useGroupId()}`,
       getLink:  (): LinkProps => ({
         "to": "/dashboard/auth/groups/$groupid",
-        "params": useParams({ "from": "/dashboard/auth/groups/$groupid" })
+        "params": useParams({ "from": "/dashboard/auth/groups/$groupid/" })
       })
     }
   }

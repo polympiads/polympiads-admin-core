@@ -11,7 +11,7 @@ export interface ManagedTableProps<T, TKind> {
     pageQuery: string,
     orderingQuery: string,
     inMemory ?: boolean,
-    selectionPolicy: SelectionPolicy<T>,
+    selectionPolicy ?: SelectionPolicy<T>,
     kind  : TKind,
     query : (sortParam: string, page: number, page_size: number) => Promise<PaginatedResults<T> | undefined>
 };

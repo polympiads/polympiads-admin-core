@@ -1,26 +1,26 @@
 import { createFileRoute, useParams, type LinkProps } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react';
-import { type AuthGroupDetail, type AuthPermissionDetail, type AuthUserDetail, authUsersRetrieve } from '../../../../client';
-import { StringInfoField } from '../../../../components/fields/StringInfoField';
-import { TitleField } from '../../../../components/fields/TitleField';
-import { BooleanInfoField } from '../../../../components/fields/BooleanInfoField';
-import { GroupTable } from '../tables/GroupsTable';
-import { useInMemoryQuery } from '../../../../components/table/TableComponent';
-import { PermissionTable } from '../tables/PermissionTable';
-import { Label } from '../../../../components/fields/Label';
+import { type AuthGroupDetail, type AuthPermissionDetail, type AuthUserDetail, authUsersRetrieve } from '../../../../../client';
+import { StringInfoField } from '../../../../../components/fields/StringInfoField';
+import { TitleField } from '../../../../../components/fields/TitleField';
+import { BooleanInfoField } from '../../../../../components/fields/BooleanInfoField';
+import { GroupTable } from '../../tables/GroupsTable';
+import { useInMemoryQuery } from '../../../../../components/table/TableComponent';
+import { PermissionTable } from '../../tables/PermissionTable';
+import { Label } from '../../../../../components/fields/Label';
 
 function useUserId (): any {
-  return useParams({ "from": "/dashboard/auth/users/$userid" }).userid;
+  return useParams({ "from": "/dashboard/auth/users/$userid/" }).userid;
 }
 
-export const Route = createFileRoute("/dashboard/auth/users/$userid")({
+export const Route = createFileRoute("/dashboard/auth/users/$userid/")({
   component: UserInfo,
   staticData: {
     breadcrumb: {
       getTitle: () => `User #${useUserId()}`,
       getLink:  (): LinkProps => ({
         "to": "/dashboard/auth/users/$userid",
-        "params": useParams({ "from": "/dashboard/auth/users/$userid" })
+        "params": useParams({ "from": "/dashboard/auth/users/$userid/" })
       })
     }
   }
