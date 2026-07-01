@@ -10,7 +10,7 @@ export const Route = createFileRoute("/dashboard/auth/users/$userid/edit")({
   component: UserEdit,
   staticData: {
     breadcrumb: {
-      getTitle: () => `Edit User #${useUserId()}`,
+      getTitle: () => `Edit`,
       getLink:  (): LinkProps => ({
         "to": "/dashboard/auth/users/$userid/edit",
         "params": useParams({ "from": "/dashboard/auth/users/$userid/edit" })

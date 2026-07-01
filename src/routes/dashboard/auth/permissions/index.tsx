@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import usePageQuery from "../../../../hooks/usePageQuery";
-import useOrderingQuery from "../../../../hooks/useOrderingQuery";
-import type { SortingState } from "@tanstack/react-table";
-import { useCallback } from "react";
-import { authPermissionsList, type AuthPermissionSummary } from "../../../../client";
-import TableComponent from "../../../../components/table/TableComponent";
+import { type AuthPermissionSummary } from "../../../../client";
 import { PermissionTable } from "../tables/PermissionTable";
+import usePermissionsQuery from "../hooks/usePermissionsQuery";
 
 export const Route = createFileRoute("/dashboard/auth/permissions/")({
   component: PermissionsList,
@@ -13,26 +9,15 @@ export const Route = createFileRoute("/dashboard/auth/permissions/")({
 })
 
 function PermissionsList () {
-    const query = async (sortParam: string, page: number, page_size: number) => {
-      const { data } = await authPermissionsList({
-        query: {
-          page_size: page_size,
-          page: page,
-          ordering: sortParam
-        }
-      });
-      return data;
-    }
-    
-      return <>
-        <div className="flex">
-          <p>Permissions List</p>
-          <div className="flex-1"></div>
-        </div>
-        <PermissionTable<AuthPermissionSummary>
-          kind="summary"
-          pageQuery="page"
-          orderingQuery="ordering"
-          query={query} />
-      </>
+    return <>
+      <div className="flex">
+        <p>Permissions List</p>
+        <div className="flex-1"></div>
+      </div>
+      <PermissionTable<AuthPermissionSummary>
+        kind="summary"
+        pageQuery="page"
+        orderingQuery="ordering"
+        query={usePermissionsQuery()} />
+    </>
 }

@@ -13,6 +13,8 @@ export interface ManagedTableProps<T, TKind> {
     inMemory ?: boolean,
     selectionPolicy ?: SelectionPolicy<T>,
     kind  : TKind,
+
+    redirectAsSelection ?: boolean;
     query : (sortParam: string, page: number, page_size: number) => Promise<PaginatedResults<T> | undefined>
 };
 
@@ -23,6 +25,7 @@ interface SimpleTableProps<T> {
     pageQuery:     string,
     orderingQuery: string,
     
+    redirectAsSelection ?: boolean;
     inMemory ?: boolean,
     
     columns   : Column<T, any>[],
@@ -64,6 +67,8 @@ export default function SimpleTable<T> (props: SimpleTableProps<T>) {
     
               inMemory={props.inMemory}
               footerDisabled={props.inMemory}
+
+              redirectAsSelection={props.redirectAsSelection}
 
               selectionPolicy={props.selectionPolicy}
               />

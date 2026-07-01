@@ -1,6 +1,6 @@
-import { createFileRoute, useParams, type LinkProps } from '@tanstack/react-router'
-import { useCallback, useEffect, useState } from 'react';
-import { type AuthGroupDetail, type AuthPermissionDetail, type AuthUserDetail, authUsersRetrieve } from '../../../../../client';
+import { createFileRoute, useParams } from '@tanstack/react-router'
+import { useCallback } from 'react';
+import { type AuthGroupDetail, type AuthPermissionDetail } from '../../../../../client';
 import { StringInfoField } from '../../../../../components/fields/StringInfoField';
 import { TitleField } from '../../../../../components/fields/TitleField';
 import { BooleanInfoField } from '../../../../../components/fields/BooleanInfoField';
@@ -8,42 +8,19 @@ import { GroupTable } from '../../tables/GroupsTable';
 import { useInMemoryQuery } from '../../../../../components/table/TableComponent';
 import { PermissionTable } from '../../tables/PermissionTable';
 import { Label } from '../../../../../components/fields/Label';
+import { useUser } from '../../hooks/useUser';
 
 function useUserId (): any {
   return useParams({ "from": "/dashboard/auth/users/$userid/" }).userid;
 }
 
 export const Route = createFileRoute("/dashboard/auth/users/$userid/")({
-  component: UserInfo,
-  staticData: {
-    breadcrumb: {
-      getTitle: () => `User #${useUserId()}`,
-      getLink:  (): LinkProps => ({
-        "to": "/dashboard/auth/users/$userid",
-        "params": useParams({ "from": "/dashboard/auth/users/$userid/" })
-      })
-    }
-  }
+  component: UserInfo
 })
 
 function UserInfo () {
   const userId = useUserId();
-  const [user, setUser] = useState<AuthUserDetail | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  async function loadData () {
-    setLoading(true);
-    const { data } = await authUsersRetrieve({ path: { id: userId } });
-    if (!data) {
-      setLoading(false);
-      return ;
-    }
-
-    setLoading(false);
-    setUser(data);
-  }
-
-  useEffect(() => { loadData() }, [userId]);
+  const {loading, user} = useUser(userId);
 
   const groups = useInMemoryQuery<AuthGroupDetail>(
     useCallback(

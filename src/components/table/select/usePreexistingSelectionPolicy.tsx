@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SelectionPolicy } from "./SelectionPolicy";
 import type { CheckboxVariant } from "../cells/CheckboxCell";
 
@@ -42,18 +42,40 @@ export function usePreexistingSelectionPolicy<T, K extends keyof T> (
     }, [field, existingSet]);
 
     const clearSelection = useCallback(() => {
-        console.log("CLEAR SELECTION ?")
         setAddedIds(new Set());
         setRemovedIds(new Set());
     }, []);
 
     useEffect(clearSelection, [existingSet]);
 
+    const addedLabel = useMemo(() => {
+        if (addedIds.size == 0) {
+            return undefined;
+        }
+
+        return `${addedIds.size} added`;
+    }, [addedIds]);
+    
+    const removedLabel = useMemo(() => {
+        if (removedIds.size == 0) {
+            return undefined;
+        }
+
+        return `${removedIds.size} removed`;
+    }, [removedIds]);
+
+    const label = useMemo(() => {
+        if (addedLabel && removedLabel) return `${addedLabel}, ${removedLabel}`;
+
+        return addedLabel || removedLabel || "";
+    }, [addedLabel, removedLabel]);
+
     return {
         addedIds: addedIds,
         removedIds: removedIds,
         clear: clearSelection,
         selected: selected,
-        onClick: onClick
+        onClick: onClick,
+        label: label
     }
 }

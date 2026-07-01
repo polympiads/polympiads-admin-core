@@ -2,9 +2,9 @@ import { Link, type LinkProps } from "@tanstack/react-router";
 import { flexRender, type Row, type Table } from "@tanstack/react-table";
 import { CheckboxCell } from "./cells/CheckboxCell";
 import type { SelectionPolicy } from "./select/SelectionPolicy";
-import { useCallback } from "react";
+import { useCallback, type MouseEventHandler } from "react";
 
-function TableRow<T> ({ selectionPolicy, row, redirect }: { selectionPolicy ?: SelectionPolicy<T>, redirect ?: (data: T) => LinkProps, row: Row<T> }) {
+function TableRow<T> ({ redirectAsSelection, selectionPolicy, row, redirect }: { redirectAsSelection ?: boolean, selectionPolicy ?: SelectionPolicy<T>, redirect ?: (data: T) => LinkProps, row: Row<T> }) {
     const isSelected = row.getIsSelected();
     const linkProps = redirect?.(row.original);
 
@@ -15,6 +15,13 @@ function TableRow<T> ({ selectionPolicy, row, redirect }: { selectionPolicy ?: S
     const onSelectionClick = useCallback(() => {
         selectionPolicy?.onClick(row.original);
     }, [selectionPolicy?.onClick, row]);
+
+    const onLinkClick = useCallback((mouse: React.MouseEvent<HTMLAnchorElement>) => {
+        if (redirectAsSelection) {
+            onSelectionClick();
+            mouse.preventDefault();
+        }
+    }, [onSelectionClick, redirectAsSelection]);
 
     return <tr
         key={row.id}
@@ -29,9 +36,10 @@ function TableRow<T> ({ selectionPolicy, row, redirect }: { selectionPolicy ?: S
         }
         {row.getVisibleCells().map((cell, index) => (
             <td key={cell.id} className="px-3 py-2 max-w-[200px] truncate">
-                {index === 0 && linkProps && (
+                {index === 0 && (linkProps || redirectAsSelection) && (
                         <Link
-                            {...linkProps}
+                            {...(redirectAsSelection ? {} : linkProps)}
+                            onClick={onLinkClick}
                             className="absolute left-0 inset-0 z-1"
                             aria-label="Open row"
                         />
@@ -42,7 +50,7 @@ function TableRow<T> ({ selectionPolicy, row, redirect }: { selectionPolicy ?: S
     </tr>
 }
 
-export function TableBody<T> (props: { selectionPolicy ?: SelectionPolicy<T>, noneText: string, table: Table<T>, redirect ?: (data: T) => LinkProps, }) {
+export function TableBody<T> (props: { redirectAsSelection ?: boolean, selectionPolicy ?: SelectionPolicy<T>, noneText: string, table: Table<T>, redirect ?: (data: T) => LinkProps, }) {
     const table = props.table;
 
     return <tbody>
@@ -57,7 +65,7 @@ export function TableBody<T> (props: { selectionPolicy ?: SelectionPolicy<T>, no
         </tr>
     ) : (
         table.getRowModel().rows.map((row) => {
-            return <TableRow row={row} key={row.id} redirect={props.redirect} selectionPolicy={props.selectionPolicy} />
+            return <TableRow redirectAsSelection={props.redirectAsSelection} row={row} key={row.id} redirect={props.redirect} selectionPolicy={props.selectionPolicy} />
         })
     )}
     </tbody>

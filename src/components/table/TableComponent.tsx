@@ -54,6 +54,7 @@ export interface TableProps<T> {
   query: (pageSize: number) => Promise<PaginatedResults<T> | undefined>,
   columns: Column<T, any>[],
 
+  redirectAsSelection ?: boolean,
   selectionPolicy ?: SelectionPolicy<T>
 };
 
@@ -174,7 +175,12 @@ export default function TableComponent<T> (props: TableProps<T>) {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-xs">
             <TableHeader selectionPolicy={props.selectionPolicy} table={table} />
-            <TableBody   selectionPolicy={props.selectionPolicy} noneText={props.noneText} table={table} redirect={props.redirect} />
+            <TableBody
+              redirectAsSelection={props.redirectAsSelection}
+              selectionPolicy={props.selectionPolicy}
+              noneText={props.noneText}
+              table={table}
+              redirect={props.redirect} />
           </table>
         </div>
 

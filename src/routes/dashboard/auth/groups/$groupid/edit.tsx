@@ -10,7 +10,7 @@ export const Route = createFileRoute("/dashboard/auth/groups/$groupid/edit")({
   component: GroupEdit,
   staticData: {
     breadcrumb: {
-      getTitle: () => `Edit Group #${useGroupId()}`,
+      getTitle: () => `Edit`,
       getLink:  (): LinkProps => ({
         "to": "/dashboard/auth/groups/$groupid/edit",
         "params": useParams({ "from": "/dashboard/auth/groups/$groupid/edit" })

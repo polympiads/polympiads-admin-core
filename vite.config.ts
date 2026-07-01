@@ -10,7 +10,7 @@ export default defineConfig({
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
-      routeFileIgnorePattern: 'tables|cells|forms',
+      routeFileIgnorePattern: 'tables|cells|forms|hooks',
     }),
     react(),
     tailwindcss()

@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { authUsersList, type AuthUserList } from '../../../../client'
+import { type AuthUserList } from '../../../../client'
 import { AUTH_USERS_ADD, HasPermission, IfChecks } from '../../../../lib/permissions'
 import Plus from '../../../../components/icons/Plus'
 import { UsersTable } from '../tables/UsersTable'
+import useUsersQuery from '../hooks/useUsersQuery'
 
 export const Route = createFileRoute("/dashboard/auth/users/")({
   component: UsersList,
@@ -10,17 +11,6 @@ export const Route = createFileRoute("/dashboard/auth/users/")({
 })
 
 function UsersList () {
-  const query = async (sortParam: string, page: number, page_size: number) => {
-    const { data } = await authUsersList({
-      query: {
-        page_size: page_size,
-        page: page,
-        ordering: sortParam
-      }
-    });
-    return data;
-  };
-
   return <>
     <div className="flex">
       <p>Users List</p>
@@ -39,7 +29,7 @@ function UsersList () {
       kind={"list"}
       pageQuery="page"
       orderingQuery="ordering"
-      query={query}
+      query={useUsersQuery()}
       />
   </>
 }

@@ -35,6 +35,7 @@ export function useSimpleSelectionPolicy<T, K extends keyof T> (field: K): Selec
         selected: selected,
         onClick: onClick,
         clear: clearSelection,
-        selectedIds: selectedIds
-    }
+        selectedIds: selectedIds,
+        label: selectedIds.size == 0 ? "" : `${selectedIds.size} selected`
+    };
 }
