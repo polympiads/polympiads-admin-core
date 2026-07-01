@@ -29,6 +29,19 @@ export function HasPermission (permission: string) {
         return hasPermission(user, permission);
     }
 }
+export function CheckOr (checks: (AuthCheck[] | undefined)[]): AuthCheck[] {
+    return [
+        (user: AuthUserDetail | null) => {
+            for (let subChecks of checks) {
+                if (subChecks === undefined || checksPass(subChecks, user)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    ]
+}
 
 export function checksPass (checks: AuthCheck[], user: AuthUserDetail | null) {
     for (const check of checks) {

@@ -1,5 +1,5 @@
 import { createFileRoute, useParams, type LinkProps } from "@tanstack/react-router";
-import { AUTH_USERS_CHANGE, HasPermission } from "../../../../../lib/permissions";
+import { AUTH_PERMISSIONS_VIEW, AUTH_USERS_CHANGE, HasPermission } from "../../../../../lib/permissions";
 import { PermissionTable } from "../../tables/PermissionTable";
 import { authUsersPermissionsPartialUpdate, type AuthPermissionSummary, type AuthUserDetail } from "../../../../../client";
 import { useCallback } from "react";
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/dashboard/auth/users/$userid/permissions"
         "params": useParams({ "from": "/dashboard/auth/users/$userid/permissions" })
       })
     },
-    auth: [ HasPermission(AUTH_USERS_CHANGE) ]
+    auth: [ HasPermission(AUTH_USERS_CHANGE), HasPermission(AUTH_PERMISSIONS_VIEW) ]
   }
 })
 

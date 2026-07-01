@@ -6,6 +6,8 @@ import { useInMemoryQuery } from '../../../../../components/table/TableComponent
 import { PermissionTable } from '../../tables/PermissionTable';
 import { Label } from '../../../../../components/fields/Label';
 import { useGroup } from '../../hooks/useGroup';
+import { ActionPanel } from '../../../../../components/form/ActionPanel';
+import { AUTH_GROUPS_CHANGE, AUTH_PERMISSIONS_VIEW, HasPermission } from '../../../../../lib/permissions';
 
 function useGroupId (): any {
   return useParams({ "from": "/dashboard/auth/groups/$groupid/" }).groupid;
@@ -26,6 +28,8 @@ function GroupInfo () {
     )
   );
 
+  const params = useParams({ "from": "/dashboard/auth/groups/$groupid" });
+
   if (group === null && !loading) {
     return <>Could not fetch group.</>
   }
@@ -33,7 +37,24 @@ function GroupInfo () {
   const title = `Group #${group?.id} - ${group?.name}`;
 
   return <>
-    <TitleField label={title} isSkeleton={loading} />
+    <div className='flex'>
+      <TitleField label={title} isSkeleton={loading} />
+      <div className="flex-1" />
+      <ActionPanel
+        create={{
+          label: "Edit Group",
+          link: { to: "/dashboard/auth/groups/$groupid/edit", params: params },
+          checks: [ HasPermission(AUTH_GROUPS_CHANGE) ]
+        }}
+        extra={[
+          {
+            label: "Change Permissions",
+            link: { to: "/dashboard/auth/groups/$groupid/permissions", params: params },
+            checks: [ HasPermission(AUTH_GROUPS_CHANGE), HasPermission(AUTH_PERMISSIONS_VIEW) ]
+          }
+        ]}
+        />
+    </div>
 
     <Label label="Group Permissions" />
     <PermissionTable<AuthPermissionDetail>

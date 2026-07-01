@@ -1,5 +1,5 @@
 import { createFileRoute, useParams, type LinkProps } from "@tanstack/react-router";
-import { AUTH_USERS_CHANGE, HasPermission } from "../../../../../lib/permissions";
+import { AUTH_GROUPS_VIEW, AUTH_USERS_CHANGE, HasPermission } from "../../../../../lib/permissions";
 import { authUsersGroupsPartialUpdate, type AuthGroupList, type AuthUserDetail } from "../../../../../client";
 import { useCallback } from "react";
 import { TitleField } from "../../../../../components/fields/TitleField";
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/dashboard/auth/users/$userid/groups")({
         "params": useParams({ "from": "/dashboard/auth/users/$userid/groups" })
       })
     },
-    auth: [ HasPermission(AUTH_USERS_CHANGE) ]
+    auth: [ HasPermission(AUTH_USERS_CHANGE), HasPermission(AUTH_GROUPS_VIEW) ]
   }
 })
 
